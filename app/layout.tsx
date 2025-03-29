@@ -1,3 +1,6 @@
+import { MainLayout } from "../components/layout/MainLayout";
+import { Provider } from "../components/ui/provider";
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +8,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Provider>
+          <MainLayout>{children}</MainLayout>
+        </Provider>
+      </body>
     </html>
   );
 }
