@@ -10,6 +10,7 @@ import {
   Pagination,
   Table,
   Tag,
+  Wrap,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useState } from "react";
@@ -27,7 +28,7 @@ export default function RecipePage() {
   const [page, setPage] = useState(1);
 
   return (
-    <HStack gap={8} justifyContent="center">
+    <HStack gap={8} justifyContent="center" paddingY={4}>
       <Box p={4} borderWidth={1} borderColor="gray.200" borderRadius={8}>
         <Table.Root size="sm" interactive>
           <Table.Header>
@@ -114,9 +115,11 @@ export default function RecipePage() {
             ))}
           </Table.Body>
         </Table.Root>
-        <Tag.Root size="sm">
-          <Tag.Label>123</Tag.Label>
-        </Tag.Root>
+        <Wrap gap={2}>
+          <Tag.Root size="sm">
+            <Tag.Label>123</Tag.Label>
+          </Tag.Root>
+        </Wrap>
         <Button colorPalette="teal" asChild>
           <Link href="/recipe/detail">編輯食譜</Link>
         </Button>

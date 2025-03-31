@@ -1,5 +1,6 @@
 import { MainLayout } from "../components/layout/MainLayout";
 import { Provider } from "../components/ui/provider";
+import "../app/globals.css";
 
 export default function RootLayout({
   children,
@@ -7,7 +8,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning>
       <body>
         <Provider>
           <MainLayout>{children}</MainLayout>

@@ -1,8 +1,8 @@
-import { Button, Link, Text, Heading } from "@chakra-ui/react";
+import { Button, Link, Text, Heading, Box } from "@chakra-ui/react";
 
 export default function Page() {
   return (
-    <div>
+    <Box className="text-gray-900" padding={4}>
       <Heading>Welcome to My Awesome Recipe</Heading>
       <Text>
         This app will help you organize your recipes, calculate the cost of
@@ -15,6 +15,6 @@ export default function Page() {
         </Link>{" "}
         to create a new recipe!
       </Text>
-    </div>
+    </Box>
   );
 }
