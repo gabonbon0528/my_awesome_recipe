@@ -2,15 +2,12 @@
 
 import {
   Button,
-  Checkbox,
-  Field,
   Input,
   InputGroup,
   NativeSelect,
   Table,
 } from "@chakra-ui/react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
-import RecipeFormItem from "./RecipeFormItem";
+import { useFieldArray, useForm } from "react-hook-form";
 import IngredientDrawer from "./IngredientDrawer";
 
 export interface Item {
@@ -84,10 +81,9 @@ export default function RecipeForm() {
                   width="auto"
                   me="-1"
                 >
-                  <NativeSelect.Field defaultValue=".com" fontSize="sm">
-                    <option value=".com">.com</option>
-                    <option value=".org">.org</option>
-                    <option value=".net">.net</option>
+                  <NativeSelect.Field defaultValue="g" fontSize="sm">
+                    <option value="g">g</option>
+                    <option value="ml">ml</option>
                   </NativeSelect.Field>
                   <NativeSelect.Indicator />
                 </NativeSelect.Root>
@@ -97,28 +93,6 @@ export default function RecipeForm() {
             </InputGroup>
           </Table.Cell>
           <Table.Cell textAlign={"center"}>{field.ratio}</Table.Cell>
-          <Table.Cell textAlign={"center"}>
-            <Controller
-              control={control}
-              name={`items.${index}.isLocked`}
-              render={({ field }) => (
-                <Field.Root disabled={field.disabled}>
-                  <Checkbox.Root
-                    checked={field.value}
-                    onCheckedChange={({ checked }) => field.onChange(checked)}
-                  >
-                    <Checkbox.HiddenInput />
-                    <Checkbox.Control />
-                    <Checkbox.Label>鎖定</Checkbox.Label>
-                  </Checkbox.Root>
-                  <Field.ErrorText>
-                    {formState.errors.items?.[index]?.isLocked?.message}
-                  </Field.ErrorText>
-                </Field.Root>
-              )}
-            />
-          </Table.Cell>
-
           <Table.Cell textAlign={"center"}>
             <IngredientDrawer />
           </Table.Cell>
