@@ -1,44 +1,50 @@
-import { Avatar, Box, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Breadcrumb,
+  Flex,
+  Icon,
+  IconButton,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import Link from "next/link";
 
 export const MainLayout = (props: { children: React.ReactNode }) => {
   return (
-    <div className={"flex flex-col min-h-screen max-w-screen"}>
-      <Header />
-      <div className={"flex-1"}>{props.children}</div>
-      <Footer />
+    <div className={"flex min-h-screen max-w-screen"}>
+      <Sidebar />
+      <VStack padding={4} alignItems={"flex-start"} gap={4} flex={1}>
+        <Breadcrumb.Root size={"lg"}>
+          <Breadcrumb.List>
+            <Breadcrumb.Item>
+              <Breadcrumb.Link href="#">Docs</Breadcrumb.Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Separator />
+            <Breadcrumb.Item>
+              <Breadcrumb.Link href="#">Components</Breadcrumb.Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Separator />
+            <Breadcrumb.Item>
+              <Breadcrumb.CurrentLink>Props</Breadcrumb.CurrentLink>
+            </Breadcrumb.Item>
+          </Breadcrumb.List>
+        </Breadcrumb.Root>
+        {props.children}
+      </VStack>
     </div>
   );
 };
 
-export const Header = () => {
+export const Sidebar = () => {
   return (
-    <Flex
-      padding={2}
-      justifyContent={"space-between"}
-      className={"bg-teal-900 text-white"}
-    >
-      <Flex gap={2} alignItems={"center"}>
-        <Link href="/">
-          <Avatar.Root>
-            <Avatar.Fallback name="Segun Adebayo" />
-            <Avatar.Image src="https://bit.ly/sage-adebayo" />
-          </Avatar.Root>
-        </Link>
-        <Text fontSize={"xl"} fontWeight={"bold"}>
-          Recipe Manager
-        </Text>
-      </Flex>
-    </Flex>
-  );
-};
-
-export const Footer = () => {
-  return (
-    <div className={"bg-teal-900 text-white p-2"}>
-      <div className={"container mx-auto"}>
-        <p>Footer</p>
-      </div>
-    </div>
+    <VStack padding={2} className={"bg-teal-900 text-white w-12 h-screen"}>
+      <Link href="/">
+        <Avatar.Root size={"sm"}>
+          <Avatar.Fallback name="Segun Adebayo" />
+          <Avatar.Image src="https://bit.ly/sage-adebayo" />
+        </Avatar.Root>
+      </Link>
+    </VStack>
   );
 };
