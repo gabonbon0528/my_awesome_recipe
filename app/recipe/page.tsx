@@ -10,6 +10,7 @@ import {
   Pagination,
   Table,
   Tag,
+  VStack,
   Wrap,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -28,8 +29,8 @@ export default function RecipePage() {
   const [page, setPage] = useState(1);
 
   return (
-    <HStack gap={8} justifyContent="center" paddingY={4}>
-      <Box p={4} borderWidth={1} borderColor="gray.200" borderRadius={8}>
+    <HStack gap={8} alignItems={"stretch"} paddingY={4}>
+      <VStack p={4} gap={4} borderWidth={1} borderColor="gray.200" borderRadius={8}>
         <Table.Root size="sm" interactive>
           <Table.Header>
             <Table.Row>
@@ -86,12 +87,10 @@ export default function RecipePage() {
             </Pagination.NextTrigger>
           </ButtonGroup>
         </Pagination.Root>
-      </Box>
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
+      </VStack>
+      <VStack
         alignItems={"start"}
-        gap={4}
+        justifyContent={"space-between"}
         p={4}
         borderWidth={1}
         borderColor="gray.200"
@@ -115,15 +114,17 @@ export default function RecipePage() {
             ))}
           </Table.Body>
         </Table.Root>
-        <Wrap gap={2}>
-          <Tag.Root size="sm">
-            <Tag.Label>123</Tag.Label>
-          </Tag.Root>
-        </Wrap>
-        <Button colorPalette="teal" asChild>
-          <Link href="/recipe/detail">編輯食譜</Link>
-        </Button>
-      </Box>
+        <VStack alignItems={"start"} gap={4}>
+          <Wrap gap={2}>
+            <Tag.Root size="sm">
+              <Tag.Label>123</Tag.Label>
+            </Tag.Root>
+          </Wrap>
+          <Button colorPalette="teal" asChild>
+            <Link href="/recipe/detail">編輯食譜</Link>
+          </Button>
+        </VStack>
+      </VStack>
     </HStack>
   );
 }

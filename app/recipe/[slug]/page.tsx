@@ -9,15 +9,9 @@ export default async function Page({
   const { slug } = await params;
 
   return (
-    <Flex
-      padding={4}
-      flexDirection={"column"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      gap={4}
-    >
-      <Heading>My Post: {slug}</Heading>
-      <Table.Root size="md" rounded={"md"} variant="outline" width={"80%"}>
+    <Flex flexDirection={"column"} gap={4}>
+      <Heading>My Recipe: {slug}</Heading>
+      <Table.Root size="md" rounded={"md"} variant="outline" width={"100%"}>
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader textAlign={"center"}>拖曳</Table.ColumnHeader>
