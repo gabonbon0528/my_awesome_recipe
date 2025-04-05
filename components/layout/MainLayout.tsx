@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Breadcrumb,
+  Button,
   Flex,
   Icon,
   IconButton,
@@ -9,6 +10,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { FaBurger, FaBookBookmark } from "react-icons/fa6";
+import { Tooltip } from "../ui/tooltip";
 
 export const MainLayout = (props: { children: React.ReactNode }) => {
   return (
@@ -38,12 +41,31 @@ export const MainLayout = (props: { children: React.ReactNode }) => {
 
 export const Sidebar = () => {
   return (
-    <VStack padding={2} className={"bg-teal-900 text-white w-12 h-screen"}>
+    <VStack
+      padding={2}
+      gap={2}
+      bg={"teal"}
+      className={"text-white w-14 h-screen"}
+    >
       <Link href="/">
-        <Avatar.Root size={"sm"}>
+        <Avatar.Root size={"md"}>
           <Avatar.Fallback name="Segun Adebayo" />
           <Avatar.Image src="https://bit.ly/sage-adebayo" />
         </Avatar.Root>
+      </Link>
+      <Link href="/ingredient">
+        <Tooltip content="原料" interactive>
+          <IconButton rounded="full" colorPalette="teal">
+            <FaBurger />
+          </IconButton>
+        </Tooltip>
+      </Link>
+      <Link href="/recipe">
+        <Tooltip content="食譜" interactive>
+          <IconButton rounded="full" colorPalette="teal">
+            <FaBookBookmark />
+          </IconButton>
+        </Tooltip>
       </Link>
     </VStack>
   );
