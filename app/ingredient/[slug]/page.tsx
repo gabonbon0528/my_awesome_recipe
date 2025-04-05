@@ -3,7 +3,7 @@ import {
   getPurchaseById
 } from "@/services/ingredients";
 import { Box } from "@chakra-ui/react";
-import CreateForm from "../../../components/Ingredient/IngredientForm";
+import IngredientForm from "../../../components/Ingredient/IngredientForm";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = await params;
@@ -18,7 +18,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <Box width={"100%"}>
-      <CreateForm
+      <IngredientForm
         isCreate={slug === "create"}
         types={serializedTypes}
         purchase={purchase}

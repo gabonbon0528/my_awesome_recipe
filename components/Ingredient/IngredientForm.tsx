@@ -129,7 +129,6 @@ export default function IngredientForm({
         isCreate ? handleCreateIngredient : handleUpdateIngredient
       )}
     >
-      <Toaster />
       <DetailHeader isCreate={isCreate} />
       <Stack gap="4" maxW="sm">
         <Controller

@@ -1,6 +1,7 @@
 import { MainLayout } from "../components/layout/MainLayout";
 import { Provider } from "../components/ui/provider";
 import "../app/globals.css";
+import { Toaster } from "../components/ui/toaster";
 
 export default function RootLayout({
   children,
@@ -11,6 +12,7 @@ export default function RootLayout({
     <html suppressHydrationWarning>
       <body>
         <Provider>
+          <Toaster />
           <MainLayout>{children}</MainLayout>
         </Provider>
       </body>

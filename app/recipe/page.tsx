@@ -1,21 +1,8 @@
-"use client";
-
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Card,
-  HStack,
-  IconButton,
-  Pagination,
-  Table,
-  Tag,
-  VStack,
-  Wrap,
-} from "@chakra-ui/react";
+import { Button, Heading, HStack, VStack } from "@chakra-ui/react";
 import Link from "next/link";
-import { useState } from "react";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import { FaPlus } from "react-icons/fa6";
+import RecipeList from "../../components/Recipe/RecipeList";
+import { getAllRecipes } from "@/services/recipe";
 
 const items = [
   { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
@@ -25,106 +12,26 @@ const items = [
   { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
 ];
 
-export default function RecipePage() {
-  const [page, setPage] = useState(1);
+export default async function RecipePage() {
+  const recipes = await getAllRecipes();
+  const serializedRecipes = recipes.map((recipe) => ({
+    ...recipe,
+    createdAt: recipe.createdAt?.toDate().toISOString(),
+    updatedAt: recipe.updatedAt?.toDate().toISOString(),
+  }));
 
   return (
-    <HStack gap={8} alignItems={"stretch"} paddingY={4}>
-      <VStack p={4} gap={4} borderWidth={1} borderColor="gray.200" borderRadius={8}>
-        <Table.Root size="sm" interactive>
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader>食譜名稱</Table.ColumnHeader>
-              <Table.ColumnHeader>上次編輯日期</Table.ColumnHeader>
-              <Table.ColumnHeader>標籤</Table.ColumnHeader>
-              <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {items.map((item) => (
-              <Table.Row key={item.id}>
-                <Table.Cell>{item.name}</Table.Cell>
-                <Table.Cell>{item.category}</Table.Cell>
-                <Table.Cell>
-                  <Tag.Root size="sm">
-                    <Tag.Label>{item.price}</Tag.Label>
-                  </Tag.Root>
-                </Table.Cell>
-                <Table.Cell textAlign="end">
-                  <Button colorPalette="teal" variant="outline">
-                    檢視
-                  </Button>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
-        <Pagination.Root
-          count={20}
-          pageSize={2}
-          page={page}
-          onPageChange={(e) => setPage(e.page)}
-        >
-          <ButtonGroup variant="ghost" size="sm">
-            <Pagination.PrevTrigger asChild>
-              <IconButton>
-                <HiChevronLeft />
-              </IconButton>
-            </Pagination.PrevTrigger>
-
-            <Pagination.Items
-              render={(page) => (
-                <IconButton variant={{ base: "ghost", _selected: "outline" }}>
-                  {page.value}
-                </IconButton>
-              )}
-            />
-
-            <Pagination.NextTrigger asChild>
-              <IconButton>
-                <HiChevronRight />
-              </IconButton>
-            </Pagination.NextTrigger>
-          </ButtonGroup>
-        </Pagination.Root>
-      </VStack>
-      <VStack
-        alignItems={"start"}
-        justifyContent={"space-between"}
-        p={4}
-        borderWidth={1}
-        borderColor="gray.200"
-        borderRadius={8}
-      >
-        <Table.Root size="sm" striped>
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader>材料名稱</Table.ColumnHeader>
-              <Table.ColumnHeader>數量</Table.ColumnHeader>
-              <Table.ColumnHeader>單位</Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {items.map((item) => (
-              <Table.Row key={item.id}>
-                <Table.Cell>{item.name}</Table.Cell>
-                <Table.Cell>{item.price}</Table.Cell>
-                <Table.Cell>{item.category}</Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
-        <VStack alignItems={"start"} gap={4}>
-          <Wrap gap={2}>
-            <Tag.Root size="sm">
-              <Tag.Label>123</Tag.Label>
-            </Tag.Root>
-          </Wrap>
-          <Button colorPalette="teal" asChild>
-            <Link href="/recipe/detail">編輯食譜</Link>
+    <VStack width={"100%"} alignItems={"stretch"}>
+      <HStack justifyContent={"space-between"} pb={2}>
+        <Heading size={"3xl"}>食譜</Heading>
+        <Link href="/recipe/create">
+          <Button size={"md"} colorPalette={"teal"}>
+            <FaPlus />
+            新增食譜
           </Button>
-        </VStack>
-      </VStack>
-    </HStack>
+        </Link>
+      </HStack>
+      <RecipeList recipes={serializedRecipes} />
+    </VStack>
   );
 }

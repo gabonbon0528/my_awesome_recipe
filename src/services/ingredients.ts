@@ -11,11 +11,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
-import {
-  IngredientFormValues,
-  IngredientPurchase,
-  IngredientType,
-} from "@/types/ingredients";
+import { IngredientPurchase, IngredientType } from "@/types/ingredients";
 import { cache } from "react";
 import { notFound } from "next/navigation";
 
@@ -169,7 +165,7 @@ export async function updatePurchaseDetails(
   const purchaseDocRef = doc(purchasesCollectionRef, purchaseId);
   const dataToUpdate = {
     ...updateData,
-    updatedAt: serverTimestamp()
+    updatedAt: serverTimestamp(),
   };
   try {
     await updateDoc(purchaseDocRef, dataToUpdate);
@@ -178,3 +174,35 @@ export async function updatePurchaseDetails(
     console.error(`更新購買記錄 '${purchaseId}' 時出錯: `, error);
   }
 }
+
+// --- 根據 ID (名稱) 讀取單一成分類型 ---
+export async function getIngredientType(ingredientName: string) {
+  try {
+    const purchasesQuery = query(
+      purchasesCollectionRef,
+      where("ingredientType", "==", ingredientName)
+    );
+    const purchasesSnapshot = await getDocs(purchasesQuery);
+    const purchases = [];
+    purchasesSnapshot.forEach((doc) => {
+      purchases.push({ id: doc.id, ...doc.data() });
+    });
+
+    if (purchases.length > 0) {
+      console.log("成分類型資料:", purchases);
+      return purchases;
+    } else {
+      console.log(`找不到成分類型: ${ingredientName}`);
+      return [];
+    }
+  } catch (error) {
+    console.error(`讀取成分類型 '${ingredientName}' 時出錯: `, error);
+    return null;
+  }
+}
+
+export const cachedGetIngredientType = cache(async (ingredientName: string) => {
+  const purchases = await getIngredientType(ingredientName);
+  if (!purchases) notFound();
+  return purchases;
+});

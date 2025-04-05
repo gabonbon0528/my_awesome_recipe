@@ -2,65 +2,37 @@
 
 import {
   Button,
+  Field,
   Input,
   InputGroup,
   NativeSelect,
   Table,
 } from "@chakra-ui/react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import IngredientDrawer from "./IngredientDrawer";
+import { RecipeItem } from "@/types/recipe";
 
-export interface Item {
-  id: string;
-  order: number;
-  name: string; // 項目
-  originalWeight: number; // 原始材料重量
-  ratio: number; // 比例
-  usedAmount: number; // 使用原料
-  cost: number; // 成本
-  isLocked: boolean; // 鎖定項目
-}
-
-const items: Item[] = [
-  {
-    id: "1",
-    order: 1,
-    name: "高筋麵粉",
-    originalWeight: 1000,
-    ratio: 100,
-    usedAmount: 1000,
-    cost: 50,
-    isLocked: false,
-  },
-  {
-    id: "2",
-    order: 2,
-    name: "水",
-    originalWeight: 650,
-    ratio: 65,
-    usedAmount: 650,
-    cost: 0,
-    isLocked: false,
-  },
-  {
-    id: "3",
-    order: 3,
-    name: "酵母",
-    originalWeight: 10,
-    ratio: 1,
-    usedAmount: 10,
-    cost: 5,
-    isLocked: false,
-  },
-];
+export const DEFAULT_RECIPE_ITEM: RecipeItem = {
+  id: "new",
+  order: 0,
+  name: "",
+  originalWeight: 0,
+  originalWeightUnit: "g",
+  ratio: 0,
+  usedAmount: 0,
+};
 
 export default function RecipeForm() {
-  const { control, register, formState } = useForm<{ items: Item[] }>({
-    defaultValues: { items },
-  });
-  const { fields, insert, remove } = useFieldArray<{ items: Item[] }>({
+  const {
     control,
-    name: "items",
+    register,
+    formState: { errors },
+    getValues,
+  } = useFormContext();
+
+  const { fields, insert, remove } = useFieldArray({
+    control,
+    name: "recipe",
   });
 
   return (
@@ -69,7 +41,21 @@ export default function RecipeForm() {
         <Table.Row key={field.id}>
           <Table.Cell textAlign={"center"}>⋮</Table.Cell>
           <Table.Cell>
-            <Input type="text" {...register(`items.${index}.name`)} />
+            <Field.Root required invalid={!!errors.recipe?.[index]?.name}>
+              <Input
+                type="text"
+                {...register(`recipe.${index}.name`, {
+                  required: "必填欄位",
+                  maxLength: {
+                    value: 10,
+                    message: "項目名稱最多只能10個字",
+                  },
+                })}
+              />
+              <Field.ErrorText>
+                {String(errors.recipe?.[index]?.name?.message ?? "")}
+              </Field.ErrorText>
+            </Field.Root>
           </Table.Cell>
           <Table.Cell>
             <InputGroup
@@ -92,11 +78,15 @@ export default function RecipeForm() {
               <Input ps="1rem" pe="2rem" placeholder="1000" />
             </InputGroup>
           </Table.Cell>
-          <Table.Cell textAlign={"center"}>{field.ratio}</Table.Cell>
           <Table.Cell textAlign={"center"}>
-            <IngredientDrawer />
+            {getValues(`recipe.${index}.ratio`)}
           </Table.Cell>
-          <Table.Cell textAlign={"center"}>{field.cost}</Table.Cell>
+          <Table.Cell textAlign={"center"}>
+            {/* <IngredientDrawer /> */}
+          </Table.Cell>
+          <Table.Cell textAlign={"center"}>
+            {getValues(`recipe.${index}.cost`)}
+          </Table.Cell>
           <Table.Cell textAlign={"center"}>
             <Button
               disabled={fields.length === 1}
@@ -118,7 +108,6 @@ export default function RecipeForm() {
                   ratio: 0,
                   usedAmount: 0,
                   cost: 0,
-                  isLocked: false,
                 })
               }
             >
